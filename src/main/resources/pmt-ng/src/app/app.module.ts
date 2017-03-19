@@ -5,10 +5,12 @@ import { HttpModule } from '@angular/http';
 import { PasswordModule, InputTextModule, PanelModule} from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
