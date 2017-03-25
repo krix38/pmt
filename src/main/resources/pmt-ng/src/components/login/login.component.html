@@ -1,0 +1,22 @@
+
+<div class="loginPanel">
+  <p-panel header="Sign In">
+    <div class="loginForm">
+      <table>
+        <tbody>
+          <tr>
+            <td>Login:</td>
+            <td><input type="text" pInputText [(ngModel)]="login"/></td>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td><input type="password" pInputText [(ngModel)]="password"/></td>
+          </tr>
+          <tr>
+            <button pButton type="button" (click)="gotoCreatorView()" label="Click"></button>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </p-panel>
+</div>
