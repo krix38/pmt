@@ -8,7 +8,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
 import { CreatorComponent } from './components/creator/creator.component'
 
+import { AuthGuard }                from './services/auth-guard.service';
 import { AppRoutingModule }     from './app-routing.module';
+
 
 
 @NgModule({
@@ -27,7 +29,7 @@ import { AppRoutingModule }     from './app-routing.module';
     InputTextModule,
     PanelModule
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
