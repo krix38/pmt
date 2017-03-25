@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component'
 import { CreatorComponent } from './components/creator/creator.component'
 
 import { AuthGuard }                from './services/auth-guard.service';
+import { AuthService }                from './services/auth.service';
 import { AppRoutingModule }     from './app-routing.module';
 
 
@@ -29,7 +30,10 @@ import { AppRoutingModule }     from './app-routing.module';
     InputTextModule,
     PanelModule
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

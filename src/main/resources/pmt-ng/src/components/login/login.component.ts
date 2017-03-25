@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'login-panel',
@@ -11,9 +13,14 @@ export class LoginComponent {
   login: String;
   password: String;
 
-  constructor(private router: Router) { }
+  constructor(public authService: AuthService, private router: Router) { }
 
   gotoCreatorView(): void {
-    this.router.navigate(['/creator']);
+    this.authService.login(this.login, this.password).subscribe(() => {
+      if (this.authService.isLoggedIn) {
+        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/creator';
+        this.router.navigate([redirect]);
+      }
+    });
   }
 }
