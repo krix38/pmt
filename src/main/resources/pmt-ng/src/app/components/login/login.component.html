@@ -1,19 +1,24 @@
-
 <div class="loginPanel">
   <p-panel header="Sign In">
     <div class="loginForm">
       <table>
         <tbody>
-          <tr>
-            <td>Login:</td>
-            <td><input type="text" pInputText [(ngModel)]="login"/></td>
+          <tr class="label"><td>Login:<td></tr>
+          <tr class="input">
+            <td>
+              <input type="text" pInputText [(ngModel)]="login"/>
+            </td>
+          </tr>
+          <tr class="label"><td>Password:<td></tr>
+          <tr class="input">
+            <td>
+              <input type="password" pInputText [(ngModel)]="password"/>
+            </td>
           </tr>
           <tr>
-            <td>Password:</td>
-            <td><input type="password" pInputText [(ngModel)]="password"/></td>
-          </tr>
-          <tr>
-            <button pButton type="button" (click)="gotoCreatorView()" label="Click"></button>
+            <td>
+              <button pButton type="button" (click)="gotoCreatorView()" label="Log In"></button>
+            </td>
           </tr>
         </tbody>
       </table>

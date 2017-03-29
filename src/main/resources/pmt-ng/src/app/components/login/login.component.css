@@ -1,15 +1,27 @@
 .loginPanel {
-  width: 400px;
+  width: 250px;
   margin-top: 20%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .loginForm > table {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.loginForm > table > tbody > tr > td {
-  width:50%;
+.loginForm > table > tbody > tr.input > td {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.loginForm > table > tbody > tr > td > button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.loginForm > table > tbody > tr.label > td {
+  color: black;
 }
