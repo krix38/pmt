@@ -18,6 +18,7 @@ import { CreateRegulationDialogComponent }
 
 import { AuthGuard }                from './services/auth-guard.service';
 import { AuthService }                from './services/auth.service';
+import { RegulationService }    from "./services/regulation.service";
 import { AppRoutingModule }     from './app-routing.module';
 
 
@@ -44,7 +45,8 @@ import { AppRoutingModule }     from './app-routing.module';
   ],
   providers: [
     AuthGuard,
-    AuthService
+    AuthService,
+    RegulationService
   ],
   bootstrap: [AppComponent]
 })
