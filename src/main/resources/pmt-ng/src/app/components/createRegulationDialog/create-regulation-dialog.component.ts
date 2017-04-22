@@ -23,7 +23,6 @@ export class CreateRegulationDialogComponent {
 
   create() {
     let index = this.regulationService.addRegulation(this.regulation);
-    alert(index);
     this.display = false;
     this.clear();
   }

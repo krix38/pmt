@@ -6,15 +6,20 @@ import { PasswordModule,
          InputTextModule,
          PanelModule,
          ButtonModule,
-         MenubarModule,
-         DialogModule } from 'primeng/primeng';
+         MenuModule,
+         TabViewModule,
+         DialogModule,
+         TreeModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
 import { CreatorComponent } from './components/creator/creator.component'
-import { CreatorMenuComponent } from './components/creatorMenu/creator-menu.component'
+import { RequirementsToolboxComponent } from './components/requirementsToolbox/requirements-toolbox.component'
 import { CreateRegulationDialogComponent }
   from './components/createRegulationDialog/create-regulation-dialog.component'
+import { CreatorTabMenuComponent } from './components/creatorTabMenu/creator-tab-menu.component'
+import { RequirementsViewComponent } from './components/requirementsView/requirements-view.component'
+
 
 import { AuthGuard }                from './services/auth-guard.service';
 import { AuthService }                from './services/auth.service';
@@ -28,8 +33,10 @@ import { AppRoutingModule }     from './app-routing.module';
     AppComponent,
     LoginComponent,
     CreatorComponent,
-    CreatorMenuComponent,
-    CreateRegulationDialogComponent
+    RequirementsToolboxComponent,
+    CreateRegulationDialogComponent,
+    CreatorTabMenuComponent,
+    RequirementsViewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -40,8 +47,10 @@ import { AppRoutingModule }     from './app-routing.module';
     ButtonModule,
     InputTextModule,
     PanelModule,
-    MenubarModule,
-    DialogModule
+    MenuModule,
+    TabViewModule,
+    DialogModule,
+    TreeModule
   ],
   providers: [
     AuthGuard,
