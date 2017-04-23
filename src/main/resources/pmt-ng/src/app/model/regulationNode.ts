@@ -12,5 +12,6 @@ export class RegulationNode {
     this.expandedIcon = expandedIcon;
     this.collapsedIcon = collapsedIcon;
     this.leaf = leaf;
+    this.children = [];
   }
 }

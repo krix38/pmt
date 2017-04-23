@@ -14,7 +14,11 @@ export class RequirementsViewComponent {
   constructor(private regulationService: RegulationService) {}
 
   ngOnInit() {
-          this.regulationService.getRegulations().then(regulations => this.regulations = regulations);
+        this.regulationService.requirements.subscribe(
+          requirements => {
+            this.regulations = requirements;
+          }
+        )
       }
 
 }
