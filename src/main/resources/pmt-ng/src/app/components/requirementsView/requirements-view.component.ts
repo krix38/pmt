@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TreeNode } from 'primeng/primeng';
-import { RegulationService } from "../../services/regulation.service"
+import { RequirementService } from "../../services/requirement.service"
 
 
 @Component({
@@ -9,14 +9,14 @@ import { RegulationService } from "../../services/regulation.service"
   styleUrls: ['./requirements-view.component.css']
 })
 export class RequirementsViewComponent {
-  regulations: TreeNode[];
+  requirements: TreeNode[];
 
-  constructor(private regulationService: RegulationService) {}
+  constructor(private requirementService: RequirementService) {}
 
   ngOnInit() {
-        this.regulationService.requirements.subscribe(
+        this.requirementService.requirements.subscribe(
           requirements => {
-            this.regulations = requirements;
+            this.requirements = requirements;
           }
         )
       }

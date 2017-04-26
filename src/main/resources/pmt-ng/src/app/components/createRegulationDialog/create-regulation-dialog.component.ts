@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Regulation } from "../../model/regulation"
-import { RegulationService } from "../../services/regulation.service"
+import { RequirementService } from "../../services/requirement.service"
 
 @Component({
   selector: 'create-regulation-dialog',
@@ -9,12 +9,12 @@ import { RegulationService } from "../../services/regulation.service"
 })
 export class CreateRegulationDialogComponent {
   display: boolean = false;
-  regulation: Regulation = new Regulation();
+  regulation: Regulation = new Regulation(null, null, null, null);
 
-  constructor(private regulationService: RegulationService) {}
+  constructor(private requirementService: RequirementService) {}
 
   clear() {
-    this.regulation = new Regulation();
+    this.regulation = new Regulation(null, null, null, null);
   }
 
   showDialog() {
@@ -22,7 +22,7 @@ export class CreateRegulationDialogComponent {
   }
 
   create() {
-    let index = this.regulationService.addRegulation(this.regulation);
+    let index = this.requirementService.addRequirement(this.regulation);
     this.display = false;
     this.clear();
   }

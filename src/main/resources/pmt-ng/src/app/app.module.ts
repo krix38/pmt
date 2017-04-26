@@ -23,7 +23,7 @@ import { RequirementsViewComponent } from './components/requirementsView/require
 
 import { AuthGuard }                from './services/auth-guard.service';
 import { AuthService }                from './services/auth.service';
-import { RegulationService }    from "./services/regulation.service";
+import { RequirementService }    from "./services/requirement.service";
 import { AppRoutingModule }     from './app-routing.module';
 
 
@@ -55,7 +55,7 @@ import { AppRoutingModule }     from './app-routing.module';
   providers: [
     AuthGuard,
     AuthService,
-    RegulationService
+    RequirementService
   ],
   bootstrap: [AppComponent]
 })

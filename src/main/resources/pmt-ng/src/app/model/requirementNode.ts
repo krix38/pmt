@@ -1,10 +1,10 @@
-export class RegulationNode {
+export class RequirementNode {
   label: string;
   data: string;
   expandedIcon: string;
   collapsedIcon: string;
   leaf: boolean;
-  children: RegulationNode[];
+  children: RequirementNode[];
 
   constructor(label: string, data: string, expandedIcon: string, collapsedIcon: string, leaf: boolean){
     this.label = label;
