@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from "rxjs/Rx";
 
 import { Regulation } from '../model/regulation';
+import { Topic } from '../model/topic'
 import { Requirement } from '../model/requirement';
 
 import { RequirementNode } from '../model/requirementNode';
 import { REGULATIONS } from '../model/mock-regulations';
+import { TOPICS } from '../model/mock-topics'
 
 import { TreeNode } from 'primeng/primeng';
 
@@ -28,28 +30,56 @@ export class RequirementService {
       .push(new RequirementNode("Requirements", null, null, null, false));
   }
 
-  getRequirementsNodes(): RequirementNode[]{
-    return this._requirements.getValue()[0].children
+  addRequirement(requirement: Requirement){
+    switch(requirement.constructor){
+      case Regulation:
+        this.addRegulation(<Regulation>requirement);
+        break;
+      case Topic:
+        this.addTopic(<Topic>requirement);
+        break;
+    }
   }
 
-  addRequirementToRequirementTree(requirement: Requirement){
-    this
-      .getRequirementsNodes()
-      .push(this.convertRegulationToRequirementNode(<Regulation>requirement));
+  addRegulation(regulation: Regulation){
+      let ready = this.saveRegulationMock(regulation);
+      ready.subscribe(
+        res => {
+          this.addRegulationToRequirementTree(regulation);
+          this.updateRequirementsObservable();
+        }
+      )
+  }
+
+  addTopic(topic: Topic){
+    let ready = this.saveTopicMock(topic);
+    ready.subscribe(
+      res => {
+        this.addTopicToRequirementTree(topic);
+        this.updateRequirementsObservable();
+      }
+    )
   }
 
   updateRequirementsObservable(){
     this._requirements.next(this._requirements.getValue());
   }
 
-  addRequirement(requirement: Requirement){
-      let ready = this.saveRegulationMock(<Regulation>requirement);
-      ready.subscribe(
-        res => {
-          this.addRequirementToRequirementTree(requirement);
-          this.updateRequirementsObservable();
-        }
-      )
+  addRegulationToRequirementTree(regulation: Regulation){
+    this
+      .getRequirementsNodes()
+      .push(this.convertRegulationToRequirementNode(regulation));
+  }
+
+  addTopicToRequirementTree(topic: Topic){
+    this
+      .getRequirementsNodes() [topic.regulationId]
+      .children
+      .push(this.convertTopicToRequirementNode(topic));
+  }
+
+  getRequirementsNodes(): RequirementNode[]{
+    return this._requirements.getValue()[0].children
   }
 
 
@@ -62,7 +92,20 @@ export class RequirementService {
     return new Observable(observer => observer.next(regulation));
   }
 
+  saveTopicMock(topic: Topic): Observable<Topic> {
+    let newIndex = (TOPICS.length > 0)
+      ? TOPICS[TOPICS.length-1].id + 1
+      : 0;
+    topic.id = newIndex;
+    TOPICS.push(topic);
+    return new Observable(observer => observer.next(topic));
+  }
+
   convertRegulationToRequirementNode(regulation: Regulation): RequirementNode{
     return new RequirementNode("Regulation: " + regulation.name, null, null, null, false);
+  }
+
+  convertTopicToRequirementNode(topic: Topic): RequirementNode{
+    return new RequirementNode("Topic: " + topic.name, null, null, null, false);
   }
 }

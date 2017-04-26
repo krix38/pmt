@@ -9,12 +9,12 @@ import { RequirementService } from "../../services/requirement.service"
 })
 export class CreateRegulationDialogComponent {
   display: boolean = false;
-  regulation: Regulation = new Regulation(null, null, null, null);
+  regulation: Regulation = new Regulation(null, null, null);
 
   constructor(private requirementService: RequirementService) {}
 
   clear() {
-    this.regulation = new Regulation(null, null, null, null);
+    this.regulation = new Regulation(null, null, null);
   }
 
   showDialog() {
