@@ -1,0 +1,34 @@
+<p-dialog header="Create Topic" [(visible)]="display" modal="modal" width="300" responsive="true">
+
+  <div class="dialogForm">
+    <table>
+      <tbody>
+        <tr class="label"><td>Name:<td></tr>
+        <tr class="input">
+          <td>
+            <input type="text" pInputText [(ngModel)]="topic.name"/>
+          </td>
+        </tr>
+        <tr class="label"><td>Description:<td></tr>
+        <tr class="input">
+          <td>
+            <input type="text" pInputText [(ngModel)]="topic.description"/>
+          </td>
+        </tr>
+        <tr class="label"><td>Regulation id:<td></tr>
+        <tr class="input">
+          <td>
+            <input type="text" pInputText [(ngModel)]="topic.regulationId"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
+          <button type="button" pButton icon="fa-check" (click)="create()" label="Create"></button>
+      </div>
+  </p-footer>
+</p-dialog>

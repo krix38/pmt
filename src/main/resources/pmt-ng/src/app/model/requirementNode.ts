@@ -1,16 +1,14 @@
 export class RequirementNode {
+  id: number;
   label: string;
-  data: string;
-  expandedIcon: string;
-  collapsedIcon: string;
   leaf: boolean;
+  expanded: boolean;
   children: RequirementNode[];
 
-  constructor(label: string, data: string, expandedIcon: string, collapsedIcon: string, leaf: boolean){
+  constructor(id: number, label: string, expanded: boolean, leaf: boolean){
+    this.id = id;
     this.label = label;
-    this.data = data;
-    this.expandedIcon = expandedIcon;
-    this.collapsedIcon = collapsedIcon;
+    this.expanded = expanded;
     this.leaf = leaf;
     this.children = [];
   }

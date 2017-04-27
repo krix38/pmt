@@ -1,3 +1,11 @@
 .dialogForm > table > tbody > tr.label > td {
   color: black;
 }
+
+.ui-treenode-connector-line {
+  min-width: 1px;
+}
+
+.ui-tree-horizontal {
+  height: 300px;
+}

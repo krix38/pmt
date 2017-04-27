@@ -27,7 +27,16 @@ export class RequirementService {
     this
       ._requirements
       .getValue()
-      .push(new RequirementNode("Requirements", null, null, null, false));
+      .push(new RequirementNode(0, "Requirements", false, true));
+  }
+
+  getAllRegulations(): Regulation[]{
+    let ready = this.getAllRegulationsRemoteMock();
+    let regulations: Regulation[] = null;
+    ready.subscribe(
+      fetchedRegulations => regulations = fetchedRegulations
+    );
+    return regulations;
   }
 
   addRequirement(requirement: Requirement){
@@ -44,8 +53,8 @@ export class RequirementService {
   addRegulation(regulation: Regulation){
       let ready = this.saveRegulationMock(regulation);
       ready.subscribe(
-        res => {
-          this.addRegulationToRequirementTree(regulation);
+        persistedRegulation => {
+          this.addRegulationToRequirementTree(persistedRegulation);
           this.updateRequirementsObservable();
         }
       )
@@ -54,8 +63,8 @@ export class RequirementService {
   addTopic(topic: Topic){
     let ready = this.saveTopicMock(topic);
     ready.subscribe(
-      res => {
-        this.addTopicToRequirementTree(topic);
+      persistedRegulation => {
+        this.addTopicToRequirementTree(persistedRegulation);
         this.updateRequirementsObservable();
       }
     )
@@ -66,20 +75,39 @@ export class RequirementService {
   }
 
   addRegulationToRequirementTree(regulation: Regulation){
-    this
-      .getRequirementsNodes()
-      .push(this.convertRegulationToRequirementNode(regulation));
+    let rootNode: RequirementNode = this.getRootNode();
+    if(rootNode.children.length == 0){
+      rootNode.expanded = true;
+      rootNode.leaf = false;
+    }
+    this.getRegulationNodes().push(this.convertRegulationToRequirementNode(regulation));
   }
 
   addTopicToRequirementTree(topic: Topic){
-    this
-      .getRequirementsNodes() [topic.regulationId]
-      .children
-      .push(this.convertTopicToRequirementNode(topic));
+    let regulation: RequirementNode = this.getRegulationNodeById(topic.regulationId);
+    regulation.leaf = false;
+    regulation.expanded = true;
+    regulation.children.push(this.convertTopicToRequirementNode(topic));
   }
 
-  getRequirementsNodes(): RequirementNode[]{
-    return this._requirements.getValue()[0].children
+  getRegulationNodeById(id: number): RequirementNode{
+    let retval: RequirementNode = null;
+    this
+      .getRegulationNodes().forEach(
+        node => {
+          if(node.id == id){
+            retval = node;
+          }
+      });
+      return retval;
+  }
+
+  getRegulationNodes(): RequirementNode[]{
+    return this._requirements.getValue()[0].children;
+  }
+
+  getRootNode(): RequirementNode{
+    return this._requirements.getValue()[0];
   }
 
 
@@ -101,11 +129,15 @@ export class RequirementService {
     return new Observable(observer => observer.next(topic));
   }
 
+  getAllRegulationsRemoteMock(): Observable<Regulation[]> {
+    return new Observable(observer => observer.next(REGULATIONS));
+  }
+
   convertRegulationToRequirementNode(regulation: Regulation): RequirementNode{
-    return new RequirementNode("Regulation: " + regulation.name, null, null, null, false);
+    return new RequirementNode(regulation.id, "Regulation: " + regulation.name, false, true);
   }
 
   convertTopicToRequirementNode(topic: Topic): RequirementNode{
-    return new RequirementNode("Topic: " + topic.name, null, null, null, false);
+    return new RequirementNode(topic.id, "Topic: " + topic.name, false, true);
   }
 }
