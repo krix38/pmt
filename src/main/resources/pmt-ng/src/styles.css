@@ -7,5 +7,10 @@
 }
 
 .ui-tree-horizontal {
-  height: 300px;
+  min-height: 300px;
+}
+
+label.ui-dropdown-label {
+  padding-left: 10px;
+  padding-right: 30px !important;
 }

@@ -16,8 +16,8 @@ import { TreeNode } from 'primeng/primeng';
 @Injectable()
 export class RequirementService {
 
-  private _requirements: BehaviorSubject<RequirementNode[]> = new BehaviorSubject([]);
-  public readonly requirements: Observable<RequirementNode[]> = this._requirements.asObservable();
+  private _requirementTree: BehaviorSubject<RequirementNode[]> = new BehaviorSubject([]);
+  public readonly requirementTree: Observable<RequirementNode[]> = this._requirementTree.asObservable();
 
   constructor(){
     this.addRootNode();
@@ -25,7 +25,7 @@ export class RequirementService {
 
   addRootNode(){
     this
-      ._requirements
+      ._requirementTree
       .getValue()
       .push(new RequirementNode(0, "Requirements", false, true));
   }
@@ -71,7 +71,7 @@ export class RequirementService {
   }
 
   updateRequirementsObservable(){
-    this._requirements.next(this._requirements.getValue());
+    this._requirementTree.next(this._requirementTree.getValue());
   }
 
   addRegulationToRequirementTree(regulation: Regulation){
@@ -103,11 +103,11 @@ export class RequirementService {
   }
 
   getRegulationNodes(): RequirementNode[]{
-    return this._requirements.getValue()[0].children;
+    return this._requirementTree.getValue()[0].children;
   }
 
   getRootNode(): RequirementNode{
-    return this._requirements.getValue()[0];
+    return this._requirementTree.getValue()[0];
   }
 
 

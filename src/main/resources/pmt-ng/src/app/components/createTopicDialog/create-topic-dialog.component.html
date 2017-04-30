@@ -1,8 +1,14 @@
-<p-dialog header="Create Topic" [(visible)]="display" modal="modal" width="300" responsive="true">
+<p-dialog header="Create Topic" [(visible)]="display" modal="modal" width="400" responsive="true">
 
   <div class="dialogForm">
     <table>
       <tbody>
+        <tr class="label"><td>Regulation:<td></tr>
+        <tr class="input">
+          <td>
+            <p-dropdown appendTo="body" [autoWidth]="false" [options]="regulations" [(ngModel)]="topic.regulationId"></p-dropdown>
+          </td>
+        </tr>
         <tr class="label"><td>Name:<td></tr>
         <tr class="input">
           <td>
@@ -13,12 +19,6 @@
         <tr class="input">
           <td>
             <input type="text" pInputText [(ngModel)]="topic.description"/>
-          </td>
-        </tr>
-        <tr class="label"><td>Regulation id:<td></tr>
-        <tr class="input">
-          <td>
-            <input type="text" pInputText [(ngModel)]="topic.regulationId"/>
           </td>
         </tr>
       </tbody>

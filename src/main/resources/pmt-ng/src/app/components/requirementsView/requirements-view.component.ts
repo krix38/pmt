@@ -14,7 +14,7 @@ export class RequirementsViewComponent {
   constructor(private requirementService: RequirementService) {}
 
   ngOnInit() {
-        this.requirementService.requirements.subscribe(
+        this.requirementService.requirementTree.subscribe(
           requirements => {
             this.requirements = requirements;
           }

@@ -9,7 +9,8 @@ import { PasswordModule,
          MenuModule,
          TabViewModule,
          DialogModule,
-         TreeModule } from 'primeng/primeng';
+         TreeModule,
+         DropdownModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
@@ -53,7 +54,8 @@ import { AppRoutingModule }     from './app-routing.module';
     MenuModule,
     TabViewModule,
     DialogModule,
-    TreeModule
+    TreeModule,
+    DropdownModule
   ],
   providers: [
     AuthGuard,
