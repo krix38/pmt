@@ -5,7 +5,9 @@ import { Regulation } from '../model/regulation';
 import { Topic } from '../model/topic'
 import { Requirement } from '../model/requirement';
 
-import { RequirementNode } from '../model/requirementNode';
+import { RequirementNode } from '../model/requirement-node';
+import { RequirementNodeType } from '../model/requirement-node-type';
+
 import { REGULATIONS } from '../model/mock-regulations';
 import { TOPICS } from '../model/mock-topics'
 
@@ -27,7 +29,7 @@ export class RequirementService {
     this
       ._requirementTree
       .getValue()
-      .push(new RequirementNode(0, "Requirements", false, true));
+      .push(new RequirementNode(0, "Requirements", false, true, RequirementNodeType.Rootnode));
   }
 
   getAllRegulations(): Regulation[]{
@@ -134,10 +136,10 @@ export class RequirementService {
   }
 
   convertRegulationToRequirementNode(regulation: Regulation): RequirementNode{
-    return new RequirementNode(regulation.id, "Regulation: " + regulation.name, false, true);
+    return new RequirementNode(regulation.id, "Regulation: " + regulation.name, false, true, RequirementNodeType.Regulation);
   }
 
   convertTopicToRequirementNode(topic: Topic): RequirementNode{
-    return new RequirementNode(topic.id, "Topic: " + topic.name, false, true);
+    return new RequirementNode(topic.id, "Topic: " + topic.name, false, true, RequirementNodeType.Topic);
   }
 }
