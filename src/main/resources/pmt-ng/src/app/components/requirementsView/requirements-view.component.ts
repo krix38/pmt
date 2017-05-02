@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { TreeNode } from 'primeng/primeng';
 import { RequirementService } from "../../services/requirement.service"
 import { RequirementNode } from "../../model/requirement-node"
-import { RequirementNodeType } from "../../model/requirement-node-type"
-
 
 
 @Component({
@@ -16,8 +14,12 @@ export class RequirementsViewComponent {
 
   constructor(private requirementService: RequirementService) {}
 
-  editNode(node: RequirementNode) {
-    alert(node.requirementType);
+  editRegulation(node: RequirementNode) {
+    alert("regulation");
+  }
+
+  editTopic(node: RequirementNode) {
+    alert("topic");
   }
 
   ngOnInit() {

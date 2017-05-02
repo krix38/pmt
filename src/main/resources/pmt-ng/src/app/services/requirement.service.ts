@@ -4,10 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs/Rx";
 import { Regulation } from '../model/regulation';
 import { Topic } from '../model/topic'
 import { Requirement } from '../model/requirement';
-
 import { RequirementNode } from '../model/requirement-node';
-import { RequirementNodeType } from '../model/requirement-node-type';
-
 import { REGULATIONS } from '../model/mock-regulations';
 import { TOPICS } from '../model/mock-topics'
 
@@ -29,16 +26,14 @@ export class RequirementService {
     this
       ._requirementTree
       .getValue()
-      .push(new RequirementNode(0, "Requirements", false, true, RequirementNodeType.Rootnode));
+      .push(new RequirementNode(0, "Requirements", false, true, "rootnode"));
   }
 
-  getAllRegulations(): Regulation[]{
+  getAllRegulations(processRegulations: Function) {
     let ready = this.getAllRegulationsRemoteMock();
-    let regulations: Regulation[] = null;
     ready.subscribe(
-      fetchedRegulations => regulations = fetchedRegulations
+      fetchedRegulations => processRegulations(fetchedRegulations)
     );
-    return regulations;
   }
 
   addRequirement(requirement: Requirement){
@@ -112,6 +107,14 @@ export class RequirementService {
     return this._requirementTree.getValue()[0];
   }
 
+  getTopic(id: number): Observable<Topic>{
+    return this.getTopicRemoteMock(id);
+  }
+
+  getTopicRemoteMock(id: number): Observable<Topic> {
+
+    return new Observable(observer => observer.next())
+  }
 
   saveRegulationMock(regulation: Regulation): Observable<Regulation> {
     let newIndex = (REGULATIONS.length > 0)
@@ -136,10 +139,10 @@ export class RequirementService {
   }
 
   convertRegulationToRequirementNode(regulation: Regulation): RequirementNode{
-    return new RequirementNode(regulation.id, "Regulation: " + regulation.name, false, true, RequirementNodeType.Regulation);
+    return new RequirementNode(regulation.id, "Regulation: " + regulation.name, false, true, "regulation");
   }
 
   convertTopicToRequirementNode(topic: Topic): RequirementNode{
-    return new RequirementNode(topic.id, "Topic: " + topic.name, false, true, RequirementNodeType.Topic);
+    return new RequirementNode(topic.id, "Topic: " + topic.name, false, true, "topic");
   }
 }

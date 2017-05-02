@@ -6,11 +6,11 @@ import { RequirementService } from "../../services/requirement.service"
 import {SelectItem} from 'primeng/primeng';
 
 @Component({
-  selector: 'create-topic-dialog',
-  templateUrl: './create-topic-dialog.component.html',
-  styleUrls: ['./create-topic-dialog.component.css']
+  selector: 'edit-topic-dialog',
+  templateUrl: './edit-topic-dialog.component.html',
+  styleUrls: ['./edit-topic-dialog.component.css']
 })
-export class CreateTopicDialogComponent {
+export class EditTopicDialogComponent {
   display: boolean = false;
   topic: Topic = new Topic(null, null, null, null);
   regulations: SelectItem[] = [];
@@ -23,15 +23,14 @@ export class CreateTopicDialogComponent {
   }
 
   showDialog() {
-    this.requirementService.getAllRegulations(regulations => {
-      if(regulations.length > 0){
-        this.topic.regulationId = regulations[0].id;
-        this.display = true;
-        regulations.forEach(regulation => {
-          this.regulations.push({label: regulation.name, value:regulation.id});
-        });
-      }
-    });
+    // let regulations: Regulation[] = this.requirementService.getAllRegulations();
+    // if(regulations.length > 0){
+    //   this.topic.regulationId = regulations[0].id;
+    //   this.display = true;
+    //   regulations.forEach(regulation => {
+    //     this.regulations.push({label: regulation.name, value:regulation.id});
+    //   });
+    // }
   }
 
   create() {

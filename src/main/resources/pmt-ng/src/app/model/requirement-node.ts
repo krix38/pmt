@@ -1,5 +1,3 @@
-import { RequirementNodeType } from "./requirement-node-type"
-
 
 export class RequirementNode {
   id: number;
@@ -7,14 +5,14 @@ export class RequirementNode {
   leaf: boolean;
   expanded: boolean;
   children: RequirementNode[];
-  requirementType: RequirementNodeType;
+  type: string;
 
-  constructor(id: number, label: string, expanded: boolean, leaf: boolean, requirementType: RequirementNodeType){
+  constructor(id: number, label: string, expanded: boolean, leaf: boolean, requirementType: string){
     this.id = id;
     this.label = label;
     this.expanded = expanded;
     this.leaf = leaf;
-    this.requirementType = requirementType;
+    this.type = requirementType;
     this.children = [];
   }
 }
