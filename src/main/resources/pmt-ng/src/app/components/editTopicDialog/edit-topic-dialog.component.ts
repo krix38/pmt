@@ -22,19 +22,24 @@ export class EditTopicDialogComponent {
     this.regulations = [];
   }
 
-  showDialog() {
-    // let regulations: Regulation[] = this.requirementService.getAllRegulations();
-    // if(regulations.length > 0){
-    //   this.topic.regulationId = regulations[0].id;
-    //   this.display = true;
-    //   regulations.forEach(regulation => {
-    //     this.regulations.push({label: regulation.name, value:regulation.id});
-    //   });
-    // }
+  showDialog(topicId: number) {
+    this.requirementService.getTopic(topicId, topic => {
+      if(topic != null){
+        this.topic = topic;
+        this.requirementService.getAllRegulations(regulations => {
+          if(regulations.length > 0){
+            this.display = true;
+            regulations.forEach(regulation => {
+              this.regulations.push({label: regulation.name, value:regulation.id});
+            });
+          }
+        });
+      }
+    });
   }
 
-  create() {
-    let index = this.requirementService.addRequirement(this.topic);
+  update() {
+    let index = this.requirementService.updateRequirement(this.topic);
     this.display = false;
     this.clear();
   }

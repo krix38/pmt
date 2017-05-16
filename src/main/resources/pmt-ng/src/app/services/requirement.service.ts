@@ -47,6 +47,18 @@ export class RequirementService {
     }
   }
 
+  updateRequirement(requirement: Requirement){
+    switch(requirement.constructor){
+      case Regulation:
+        //TODO: updateRegulation
+        this.addRegulation(<Regulation>requirement);
+        break;
+      case Topic:
+        this.updateTopic(<Topic>requirement);
+        break;
+    }
+  }
+
   addRegulation(regulation: Regulation){
       let ready = this.saveRegulationMock(regulation);
       ready.subscribe(
@@ -67,8 +79,31 @@ export class RequirementService {
     )
   }
 
+  updateTopic(topic: Topic){
+    let ready = this.updateTopicMock(topic);
+    ready.subscribe(
+      persistedTopic => {
+        this.updateTopicInRequirementTree(persistedTopic);
+        this.updateRequirementsObservable();
+      }
+    )
+  }
+
+
+
   updateRequirementsObservable(){
     this._requirementTree.next(this._requirementTree.getValue());
+  }
+
+  updateTopicInRequirementTree(topic: Topic){
+    let regulation: RequirementNode = this.getRegulationNodeById(topic.regulationId);
+    regulation.leaf = false;
+    regulation.expanded = true;
+    regulation.children.forEach((topicNode, selectedIndex, topics) => {
+      if(topicNode.id == topic.id){
+        topics[selectedIndex] = this.convertTopicToRequirementNode(topic);
+      }
+    })
   }
 
   addRegulationToRequirementTree(regulation: Regulation){
@@ -107,13 +142,19 @@ export class RequirementService {
     return this._requirementTree.getValue()[0];
   }
 
-  getTopic(id: number): Observable<Topic>{
-    return this.getTopicRemoteMock(id);
+  getTopic(id: number, processTopic: Function){
+    let ready: Observable<Topic> = this.getTopicRemoteMock(id);
+    ready.subscribe(topic => processTopic(topic));
   }
 
   getTopicRemoteMock(id: number): Observable<Topic> {
-
-    return new Observable(observer => observer.next())
+    let returnTopic: Observable<Topic>;
+    TOPICS.forEach(topic => {
+      if(topic.id == id){
+        returnTopic = new Observable(observer => observer.next(topic))
+      }
+    });
+    return returnTopic;
   }
 
   saveRegulationMock(regulation: Regulation): Observable<Regulation> {
@@ -132,6 +173,15 @@ export class RequirementService {
     topic.id = newIndex;
     TOPICS.push(topic);
     return new Observable(observer => observer.next(topic));
+  }
+
+  updateTopicMock(topicToUpdate: Topic): Observable<Topic> {
+    TOPICS.forEach((topic, selectedIndex, topicArray) => {
+      if(topic.id == topicToUpdate.id){
+        topicArray[selectedIndex] = topicToUpdate;
+      }
+    });
+    return new Observable(observer => observer.next(topicToUpdate));
   }
 
   getAllRegulationsRemoteMock(): Observable<Regulation[]> {

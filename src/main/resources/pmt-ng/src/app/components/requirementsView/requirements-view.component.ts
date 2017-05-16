@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TreeNode } from 'primeng/primeng';
 import { RequirementService } from "../../services/requirement.service"
 import { RequirementNode } from "../../model/requirement-node"
-
+import { EditTopicDialogComponent }
+    from '../editTopicDialog/edit-topic-dialog.component'
 
 @Component({
   selector: 'requirements-view',
@@ -14,12 +15,14 @@ export class RequirementsViewComponent {
 
   constructor(private requirementService: RequirementService) {}
 
+  @ViewChild(EditTopicDialogComponent) editDialog;
+
   editRegulation(node: RequirementNode) {
     alert("regulation");
   }
 
-  editTopic(node: RequirementNode) {
-    alert("topic");
+  editTopic(topic: RequirementNode) {
+    this.editDialog.showDialog(topic.id);
   }
 
   ngOnInit() {
