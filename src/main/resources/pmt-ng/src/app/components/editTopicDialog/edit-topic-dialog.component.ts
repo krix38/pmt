@@ -17,6 +17,12 @@ export class EditTopicDialogComponent {
 
   constructor(private requirementService: RequirementService) {}
 
+  delete() {
+    let index = this.requirementService.deleteRequirement(this.topic);
+    this.display = false;
+    this.clear();
+  }
+
   clear() {
     this.topic = new Topic(null, null, null, null);
     this.regulations = [];

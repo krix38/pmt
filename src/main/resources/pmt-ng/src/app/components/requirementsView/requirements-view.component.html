@@ -1,10 +1,21 @@
-<p-tree [value]="requirements" layout="horizontal">
-  <template let-node  pTemplate="regulation">
-      <div (dblclick)="editRegulation(node)">{{node.label}}</div>
-  </template>
-  <template let-node  pTemplate="topic">
-      <div (dblclick)="editTopic(node)">{{node.label}}</div>
-  </template>
-</p-tree>
-<requirements-toolbox></requirements-toolbox>
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <requirements-toolbox></requirements-toolbox>
+      </td>
+      <td class="treeColumn">
+        <p-tree [value]="requirements" layout="horizontal">
+          <template let-node  pTemplate="regulation">
+              <div (dblclick)="editRegulation(node)">{{node.label}}</div>
+          </template>
+          <template let-node  pTemplate="topic">
+              <div (dblclick)="editTopic(node)">{{node.label}}</div>
+          </template>
+        </p-tree>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <edit-topic-dialog></edit-topic-dialog>

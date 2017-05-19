@@ -59,6 +59,18 @@ export class RequirementService {
     }
   }
 
+  deleteRequirement(requirement: Requirement){
+    switch(requirement.constructor){
+      case Regulation:
+        //TODO: updateRegulation
+        this.addRegulation(<Regulation>requirement);
+        break;
+      case Topic:
+        this.deleteTopic(<Topic>requirement);
+        break;
+    }
+  }
+
   addRegulation(regulation: Regulation){
       let ready = this.saveRegulationMock(regulation);
       ready.subscribe(
@@ -82,8 +94,18 @@ export class RequirementService {
   updateTopic(topic: Topic){
     let ready = this.updateTopicMock(topic);
     ready.subscribe(
-      persistedTopic => {
-        this.updateTopicInRequirementTree(persistedTopic);
+      updatedTopic => {
+        this.updateTopicInRequirementTree(topic);
+        this.updateRequirementsObservable();
+      }
+    )
+  }
+
+  deleteTopic(topic: Topic){
+    let ready = this.removeTopicMock(topic);
+    ready.subscribe(
+      deletedTopic => {
+        this.deleteTopicFromRequirementTree(topic);
         this.updateRequirementsObservable();
       }
     )
@@ -96,14 +118,21 @@ export class RequirementService {
   }
 
   updateTopicInRequirementTree(topic: Topic){
-    let regulation: RequirementNode = this.getRegulationNodeById(topic.regulationId);
-    regulation.leaf = false;
-    regulation.expanded = true;
+    this.deleteTopicFromRequirementTree(topic);
+    this.addTopicToRequirementTree(topic);
+  }
+
+  deleteTopicFromRequirementTree(topic: Topic){
+    let regulation: RequirementNode = this.getRegulationNodeByTopicId(topic.id);
     regulation.children.forEach((topicNode, selectedIndex, topics) => {
       if(topicNode.id == topic.id){
-        topics[selectedIndex] = this.convertTopicToRequirementNode(topic);
+        topics.splice(selectedIndex, 1);
+        if(regulation.children.length == 0){
+          regulation.leaf = true;
+          regulation.expanded = false;
+        }
       }
-    })
+    });
   }
 
   addRegulationToRequirementTree(regulation: Regulation){
@@ -132,6 +161,22 @@ export class RequirementService {
           }
       });
       return retval;
+  }
+
+  getRegulationNodeByTopicId(id: number): RequirementNode{
+    let retval: RequirementNode = null;
+    this.getRegulationNodes().forEach(
+      regulation => {
+        regulation.children.forEach(
+          topic => {
+            if(topic.id == id){
+              retval = regulation;
+            }
+          }
+        )
+      }
+    );
+    return retval;
   }
 
   getRegulationNodes(): RequirementNode[]{
@@ -182,6 +227,16 @@ export class RequirementService {
       }
     });
     return new Observable(observer => observer.next(topicToUpdate));
+  }
+
+  removeTopicMock(topicToRemove: Topic): Observable<Topic> {
+    TOPICS.forEach((topic, selectedIndex, topicArray) => {
+      if(topic.id == topicToRemove.id){
+        topicArray.splice(selectedIndex, 1);
+      }
+    });
+    TOPICS.splice(TOPICS.indexOf(topicToRemove), 1);
+    return new Observable(observer => observer.next(null));
   }
 
   getAllRegulationsRemoteMock(): Observable<Regulation[]> {
