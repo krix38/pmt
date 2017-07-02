@@ -50,8 +50,7 @@ export class RequirementService {
   updateRequirement(requirement: Requirement){
     switch(requirement.constructor){
       case Regulation:
-        //TODO: updateRegulation
-        this.addRegulation(<Regulation>requirement);
+        this.updateRegulation(<Regulation>requirement);
         break;
       case Topic:
         this.updateTopic(<Topic>requirement);
@@ -101,6 +100,16 @@ export class RequirementService {
     )
   }
 
+  updateRegulation(regulation: Regulation){
+    let ready = this.updateRegulationMock(regulation);
+    ready.subscribe(
+      updatedRegulation => {
+        this.updateRegulationInRequirementTree(regulation);
+        this.updateRequirementsObservable();
+      }
+    )
+  }
+
   deleteTopic(topic: Topic){
     let ready = this.removeTopicMock(topic);
     ready.subscribe(
@@ -122,6 +131,12 @@ export class RequirementService {
     this.addTopicToRequirementTree(topic);
   }
 
+  updateRegulationInRequirementTree(regulation: Regulation){
+    //get ALL topics from deleted regulation and rewire them to new one
+    this.deleteRegulationFromRequirementTree(regulation);
+    this.addRegulationToRequirementTree(regulation);
+  }
+
   deleteTopicFromRequirementTree(topic: Topic){
     let regulation: RequirementNode = this.getRegulationNodeByTopicId(topic.id);
     regulation.children.forEach((topicNode, selectedIndex, topics) => {
@@ -134,6 +149,16 @@ export class RequirementService {
       }
     });
   }
+
+  deleteRegulationFromRequirementTree(regulation: Regulation){
+    let regulations: RequirementNode[] = this.getRegulationNodes();
+    regulations.forEach((regulationNode, selectedIndex, regulations) => {
+      if(regulationNode.id == regulation.id){
+        regulations.splice(selectedIndex, 1);
+      }
+    });
+  }
+
 
   addRegulationToRequirementTree(regulation: Regulation){
     let rootNode: RequirementNode = this.getRootNode();
@@ -192,6 +217,11 @@ export class RequirementService {
     ready.subscribe(topic => processTopic(topic));
   }
 
+  getRegulation(id: number, processRegulation: Function){
+    let ready: Observable<Regulation> = this.getRegulationRemoteMock(id);
+    ready.subscribe(regulation => processRegulation(regulation));
+  }
+
   getTopicRemoteMock(id: number): Observable<Topic> {
     let returnTopic: Observable<Topic>;
     TOPICS.forEach(topic => {
@@ -200,6 +230,16 @@ export class RequirementService {
       }
     });
     return returnTopic;
+  }
+
+  getRegulationRemoteMock(id: number): Observable<Regulation> {
+    let returnRegulation: Observable<Regulation>;
+    REGULATIONS.forEach(regulation => {
+      if(regulation.id == id){
+        returnRegulation = new Observable(observer => observer.next(regulation))
+      }
+    });
+    return returnRegulation;
   }
 
   saveRegulationMock(regulation: Regulation): Observable<Regulation> {
@@ -229,6 +269,15 @@ export class RequirementService {
     return new Observable(observer => observer.next(topicToUpdate));
   }
 
+  updateRegulationMock(regulationToUpdate: Regulation): Observable<Regulation> {
+    REGULATIONS.forEach((regulation, selectedIndex, regulationArray) => {
+      if(regulation.id == regulationToUpdate.id){
+        regulationArray[selectedIndex] = regulationToUpdate;
+      }
+    });
+    return new Observable(observer => observer.next(regulationToUpdate));
+  }
+
   removeTopicMock(topicToRemove: Topic): Observable<Topic> {
     TOPICS.forEach((topic, selectedIndex, topicArray) => {
       if(topic.id == topicToRemove.id){
@@ -236,6 +285,16 @@ export class RequirementService {
       }
     });
     TOPICS.splice(TOPICS.indexOf(topicToRemove), 1);
+    return new Observable(observer => observer.next(null));
+  }
+
+  removeRegulationMock(regulationToRemove: Regulation): Observable<Regulation> {
+    REGULATIONS.forEach((regulation, selectedIndex, regulationArray) => {
+      if(regulation.id == regulationToRemove.id){
+        regulationArray.splice(selectedIndex, 1);
+      }
+    });
+    REGULATIONS.splice(REGULATIONS.indexOf(regulationToRemove), 1);
     return new Observable(observer => observer.next(null));
   }
 

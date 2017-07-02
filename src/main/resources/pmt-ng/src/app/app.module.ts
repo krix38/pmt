@@ -22,6 +22,8 @@ import { CreateTopicDialogComponent }
     from './components/createTopicDialog/create-topic-dialog.component'
 import { EditTopicDialogComponent }
     from './components/editTopicDialog/edit-topic-dialog.component'
+import { EditRegulationDialogComponent }
+    from './components/editRegulationDialog/edit-regulation-dialog.component'
 import { CreatorTabMenuComponent } from './components/creatorTabMenu/creator-tab-menu.component'
 import { RequirementsViewComponent } from './components/requirementsView/requirements-view.component'
 
@@ -44,6 +46,7 @@ import { AppRoutingModule }     from './app-routing.module';
     CreatorTabMenuComponent,
     RequirementsViewComponent,
     EditTopicDialogComponent,
+    EditRegulationDialogComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,0 +1,29 @@
+<p-dialog header="Edit Regulation" [(visible)]="display" modal="modal" width="400" responsive="true">
+
+  <div class="dialogForm">
+    <table>
+      <tbody>
+        <tr class="label"><td>Name:<td></tr>
+        <tr class="input">
+          <td>
+            <input type="text" pInputText [(ngModel)]="regulation.name"/>
+          </td>
+        </tr>
+        <tr class="label"><td>Description:<td></tr>
+        <tr class="input">
+          <td>
+            <input type="text" pInputText [(ngModel)]="regulation.description"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
+          <button type="button" pButton icon="fa-check" (click)="update()" label="Update"></button>
+          <button type="button" class="ui-button-danger" pButton icon="fa-check" (click)="delete()" label="Delete"></button>
+      </div>
+  </p-footer>
+</p-dialog>

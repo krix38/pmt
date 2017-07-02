@@ -4,6 +4,8 @@ import { RequirementService } from "../../services/requirement.service"
 import { RequirementNode } from "../../model/requirement-node"
 import { EditTopicDialogComponent }
     from '../editTopicDialog/edit-topic-dialog.component'
+import { EditRegulationDialogComponent }
+    from '../editRegulationDialog/edit-regulation-dialog.component'
 
 @Component({
   selector: 'requirements-view',
@@ -15,14 +17,16 @@ export class RequirementsViewComponent {
 
   constructor(private requirementService: RequirementService) {}
 
-  @ViewChild(EditTopicDialogComponent) editDialog;
+  @ViewChild(EditTopicDialogComponent) editTopicDialog;
+  @ViewChild(EditRegulationDialogComponent) editRegulationDialog;
 
-  editRegulation(node: RequirementNode) {
-    alert("regulation");
+
+  editRegulation(regulation: RequirementNode) {
+    this.editRegulationDialog.showDialog(regulation.id);
   }
 
   editTopic(topic: RequirementNode) {
-    this.editDialog.showDialog(topic.id);
+    this.editTopicDialog.showDialog(topic.id);
   }
 
   ngOnInit() {
