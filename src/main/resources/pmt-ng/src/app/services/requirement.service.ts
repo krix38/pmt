@@ -61,8 +61,7 @@ export class RequirementService {
   deleteRequirement(requirement: Requirement){
     switch(requirement.constructor){
       case Regulation:
-        //TODO: updateRegulation
-        this.addRegulation(<Regulation>requirement);
+        this.deleteRegulation(<Regulation>requirement);
         break;
       case Topic:
         this.deleteTopic(<Topic>requirement);
@@ -120,21 +119,45 @@ export class RequirementService {
     )
   }
 
-
+  deleteRegulation(regulation: Regulation){
+    let ready = this.removeRegulationMock(regulation);
+    ready.subscribe(
+      deletedRegulation => {
+        this.deleteRegulationFromRequirementTree(regulation);
+        this.updateRequirementsObservable();
+      }
+    )
+  }
 
   updateRequirementsObservable(){
     this._requirementTree.next(this._requirementTree.getValue());
   }
 
   updateTopicInRequirementTree(topic: Topic){
-    this.deleteTopicFromRequirementTree(topic);
-    this.addTopicToRequirementTree(topic);
+    if(this.getRegulationNodeByTopicId(topic.id).id == topic.regulationId){
+      this.editTopicInRequirementTree(topic);
+    }else{
+      this.deleteTopicFromRequirementTree(topic);
+      this.addTopicToRequirementTree(topic);
+    }
   }
 
   updateRegulationInRequirementTree(regulation: Regulation){
-    //get ALL topics from deleted regulation and rewire them to new one
-    this.deleteRegulationFromRequirementTree(regulation);
-    this.addRegulationToRequirementTree(regulation);
+    let regulations: RequirementNode[] = this.getRegulationNodes();
+    regulations.forEach((regulationNode, selectedIndex, regulations) => {
+      if(regulationNode.id == regulation.id){
+        regulationNode.label = "Regulation: " + regulation.name;
+      }
+    });
+  }
+
+  editTopicInRequirementTree(topic: Topic){
+    let regulation: RequirementNode = this.getRegulationNodeByTopicId(topic.id);
+    regulation.children.forEach((topicNode, selectedIndex, topics) => {
+      if(topicNode.id == topic.id){
+        topicNode.label = "Topic: " + topic.name;
+      }
+    });
   }
 
   deleteTopicFromRequirementTree(topic: Topic){
@@ -155,6 +178,10 @@ export class RequirementService {
     regulations.forEach((regulationNode, selectedIndex, regulations) => {
       if(regulationNode.id == regulation.id){
         regulations.splice(selectedIndex, 1);
+        if(regulations.length == 0){
+          this.getRootNode().leaf = true;
+          this.getRootNode().expanded = false;
+        }
       }
     });
   }
@@ -284,7 +311,6 @@ export class RequirementService {
         topicArray.splice(selectedIndex, 1);
       }
     });
-    TOPICS.splice(TOPICS.indexOf(topicToRemove), 1);
     return new Observable(observer => observer.next(null));
   }
 
@@ -294,7 +320,11 @@ export class RequirementService {
         regulationArray.splice(selectedIndex, 1);
       }
     });
-    REGULATIONS.splice(REGULATIONS.indexOf(regulationToRemove), 1);
+    TOPICS.forEach((topic, selectedIndex, topicArray) => {
+      if(topic.regulationId == regulationToRemove.id){
+        topicArray.splice(selectedIndex, 1);
+      }
+    });
     return new Observable(observer => observer.next(null));
   }
 
